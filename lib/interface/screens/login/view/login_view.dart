@@ -6,11 +6,12 @@ import 'package:riverpod_login_app/interface/widgets/button/regular_button.dart'
 import 'package:riverpod_login_app/interface/widgets/textFormField/regular_text_field.dart';
 import 'package:riverpod_login_app/main.dart';
 
+String email = "";
+String password = "";
+
 // ignore: must_be_immutable
 class LoginView extends ConsumerWidget {
-  LoginView({super.key});
-  String email = "";
-  String password = "";
+  const LoginView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,7 +22,7 @@ class LoginView extends ConsumerWidget {
   Column _body(BuildContext context, LoginCtrl loginCtrl) => Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: [_title, _formFields(context), _loginButton(loginCtrl)],
+        children: [_title, _formFields(context), _loginButton(loginCtrl, context)],
       );
 }
 
@@ -66,13 +67,14 @@ extension LoginViewEmailField on LoginView {
 
 //MARK: Login Button
 extension LoginButton on LoginView {
-  RegularButton _loginButton(LoginCtrl loginCtrl) {
+  RegularButton _loginButton(LoginCtrl loginCtrl, BuildContext context) {
     return RegularButton(
       onPressed: () async {
         final ModelLogin model = await loginCtrl.loginUser(email: email, password: password);
         if (model.token != null) {
           // Successful login, navigate to next screen
-          logger.i("check token ${model.token}");
+          // ignore: use_build_context_synchronously
+          Navigator.pushNamed(context, '/home');
         } else {
           // Show error message for failed login
           logger.i("check error message ${model.errorMessage}");

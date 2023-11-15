@@ -1,4 +1,5 @@
 // auth_controller.dart
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_login_app/interface/screens/login/model/model_login.dart';
 import 'package:riverpod_login_app/service/service_login.dart';
@@ -12,7 +13,8 @@ class LoginCtrl {
     try {
       ModelLogin response = await ServiceLogin.shared.login(email: email, password: password);
       return response;
-    } catch (e) {
+    } catch (e, stk) {
+      debugPrintStack(stackTrace: stk);
       return ModelLogin(errorMessage: e.toString());
     }
   }

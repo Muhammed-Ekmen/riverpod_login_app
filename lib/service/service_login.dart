@@ -15,9 +15,8 @@ class ServiceLogin {
     try {
       final response = await http.post(apiUrl, body: {'email': email, 'password': password});
       if (response.statusCode == 200) {
-        final jsonResponse = json.decode(response.body);
-        final token = jsonResponse['token'];
-        return token;
+        final jsonResponse = json.decode(response.body) as Map<String, dynamic>;
+        return ModelLogin.fromJson(jsonResponse);
       } else {
         throw Exception("ServiceLogin Error");
       }

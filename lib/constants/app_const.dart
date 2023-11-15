@@ -5,4 +5,5 @@ class AppConsts {
 
   final String baseURL = "https://reqres.in/api/";
   final String login = 'login';
+  final String users = "users";
 }
