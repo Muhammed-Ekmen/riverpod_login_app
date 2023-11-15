@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_login_app/interface/screens/login/controller/login_controller.dart';
-import 'package:riverpod_login_app/interface/screens/login/model/model_login.dart';
 import 'package:riverpod_login_app/interface/widgets/button/regular_button.dart';
 import 'package:riverpod_login_app/interface/widgets/textFormField/regular_text_field.dart';
-import 'package:riverpod_login_app/main.dart';
 
 String email = "";
 String password = "";
@@ -16,6 +14,7 @@ class LoginView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final LoginCtrl loginCtrl = ref.watch(loginCtrlProvider);
+    loginCtrl.router(context  );
     return SafeArea(child: Scaffold(backgroundColor: Colors.black, body: _body(context, loginCtrl)));
   }
 
@@ -67,20 +66,8 @@ extension LoginViewEmailField on LoginView {
 
 //MARK: Login Button
 extension LoginButton on LoginView {
-  RegularButton _loginButton(LoginCtrl loginCtrl, BuildContext context) {
-    return RegularButton(
-      onPressed: () async {
-        final ModelLogin model = await loginCtrl.loginUser(email: email, password: password);
-        if (model.token != null) {
-          // Successful login, navigate to next screen
-          // ignore: use_build_context_synchronously
-          Navigator.pushNamed(context, '/home');
-        } else {
-          // Show error message for failed login
-          logger.i("check error message ${model.errorMessage}");
-        }
-      },
-      label: "Login",
-    );
-  }
+  RegularButton _loginButton(LoginCtrl loginCtrl, BuildContext context) => RegularButton(
+        onPressed: () => LoginCtrl.shared.loginButtonOnTap(context, loginCtrl),
+        label: "Login",
+      );
 }
