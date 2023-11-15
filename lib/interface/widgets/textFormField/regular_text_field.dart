@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 class RegularTextField extends StatelessWidget {
-  const RegularTextField({super.key, this.controller, this.widht, this.height, this.hintText, this.icon});
+  const RegularTextField({super.key, this.controller, this.widht, this.height, this.hintText, this.icon, this.onChanged});
   final TextEditingController? controller;
   final double? widht;
   final double? height;
   final String? hintText;
   final IconData? icon;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -23,6 +24,7 @@ class RegularTextField extends StatelessWidget {
         decoration: _inputDecoration,
         cursorColor: Colors.black,
         controller: controller,
+        onChanged: onChanged,
       );
 
   get _inputDecoration => InputDecoration(
