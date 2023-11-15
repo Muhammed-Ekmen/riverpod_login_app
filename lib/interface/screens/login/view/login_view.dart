@@ -4,9 +4,6 @@ import 'package:riverpod_login_app/interface/screens/login/controller/login_cont
 import 'package:riverpod_login_app/interface/widgets/button/regular_button.dart';
 import 'package:riverpod_login_app/interface/widgets/textFormField/regular_text_field.dart';
 
-String email = "";
-String password = "";
-
 // ignore: must_be_immutable
 class LoginView extends ConsumerWidget {
   const LoginView({super.key});
@@ -14,7 +11,7 @@ class LoginView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final LoginCtrl loginCtrl = ref.watch(loginCtrlProvider);
-    loginCtrl.router(context  );
+    loginCtrl.router(context);
     return SafeArea(child: Scaffold(backgroundColor: Colors.black, body: _body(context, loginCtrl)));
   }
 

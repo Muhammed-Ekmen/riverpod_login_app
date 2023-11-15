@@ -2,10 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_login_app/interface/screens/login/model/model_login.dart';
-import 'package:riverpod_login_app/interface/screens/login/view/login_view.dart';
-import 'package:riverpod_login_app/main.dart';
 import 'package:riverpod_login_app/service/service_login.dart';
 import 'package:riverpod_login_app/storage/app_storage.dart';
+
+String email = "";
+String password = "";
 
 final loginCtrlProvider = Provider<LoginCtrl>((ref) {
   return LoginCtrl();
@@ -14,13 +15,9 @@ final loginCtrlProvider = Provider<LoginCtrl>((ref) {
 class LoginCtrl {
   static LoginCtrl get shared => LoginCtrl();
 
-  router(BuildContext context) {
-    Future.microtask(
-      () {
-        String? token = AppStorage.shared.read(key: AppStorageKeys.token);
-        if (token != null) Navigator.pushNamed(context, '/home');
-      },
-    );
+  Future<void> router(BuildContext context) async {
+    String? token = await AppStorage.shared.read(key: AppStorageKeys.token);
+    if (token != null) Navigator.pushNamed(context, '/home');
   }
 
   Future<ModelLogin> loginUser({required String email, required String password}) async {
@@ -37,10 +34,12 @@ class LoginCtrl {
     if (email != "" && password != "") {
       final ModelLogin model = await loginCtrl.loginUser(email: email, password: password);
       if (model.token != null) {
+        await AppStorage.shared.save(key: AppStorageKeys.token, value: model.token!);
         // ignore: use_build_context_synchronously
         Navigator.pushNamed(context, '/home');
       } else {
         // Show error message for failed login
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Colors.red,

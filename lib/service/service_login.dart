@@ -22,7 +22,7 @@ class ServiceLogin {
       }
     } catch (e) {
       logger.e("Service Login Error $e");
-      throw Exception("ServiceLogin Error");
+      throw Exception(e.toString());
     }
   }
 }

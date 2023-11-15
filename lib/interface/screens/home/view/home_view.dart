@@ -8,7 +8,7 @@ class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
-  Widget build(BuildContext context) => Scaffold(appBar: _appBar, body: _body(context));
+  Widget build(BuildContext context) => Scaffold(appBar: _appBar(context), body: _body(context));
 
   Consumer _body(BuildContext context) => Consumer(
         builder: (context, watch, child) {
@@ -17,7 +17,16 @@ class HomeView extends StatelessWidget {
         },
       );
 
-  get _appBar => AppBar(backgroundColor: Colors.black, title: const Text('Riverpod API Example'), leading: const SizedBox.shrink());
+  _appBar(BuildContext context) => AppBar(
+        backgroundColor: Colors.black,
+        title: const Text('Riverpod API Example'),
+        leading: _exitIcon(context),
+      );
+
+  _exitIcon(BuildContext context) => IconButton(
+        onPressed: () => HomeCtrl.shared.exitButtonOnTap(context),
+        icon: const Icon(Icons.exit_to_app),
+      );
 }
 
 //MARK: OnData

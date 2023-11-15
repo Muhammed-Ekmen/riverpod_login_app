@@ -9,7 +9,6 @@ final Logger logger = Logger();
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
-  await AppStorage.shared.init();
   runApp(const ProviderScope(child: MyApp()));
 }
 

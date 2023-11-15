@@ -1,19 +1,21 @@
 // controller.dart
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
-import 'package:riverpod_login_app/constants/app_const.dart';
-import 'dart:convert';
-
 import 'package:riverpod_login_app/interface/screens/home/model/model_user.dart';
+import 'package:riverpod_login_app/service/service_users.dart';
+import 'package:riverpod_login_app/storage/app_storage.dart';
 
 final userCtrlProvider = FutureProvider<ModelUser>(
   (ref) async {
-    final response = await http.get(Uri.parse("${AppConsts.shared.baseURL}${AppConsts.shared.users}"));
-    if (response.statusCode == 200) {
-      Map<String, dynamic> data = json.decode(response.body);
-      return ModelUser.fromJson(data);
-    } else {
-      throw Exception('Failed to load posts');
-    }
+    return await ServiceUsers.shared.getUsers();
   },
 );
+
+class HomeCtrl {
+  static HomeCtrl get shared => HomeCtrl();
+
+  Future<void> exitButtonOnTap(BuildContext context) async {
+    bool response = await AppStorage.shared.delete(key: AppStorageKeys.token);
+    if (response == true) Navigator.pushNamed(context, "/");
+  }
+}
